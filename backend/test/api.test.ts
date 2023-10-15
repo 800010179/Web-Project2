@@ -4,7 +4,7 @@ import app from '../src/app';
 import { UserTest } from "../src/interfaces/user";
 import { deleteUser, getUserById, getUserList, loginUser, postUser, putUser } from "./userFunctions";
 import LoginMessageResponse from "../src/interfaces/LoginMessageResponse";
-import { getSongById, getSongList, postSong, updateSong } from "./songFunctions";
+import { deleteSong, getSongById, getSongList, postSong, updateSong } from "./songFunctions";
 import { SongTest } from "../src/interfaces/song";
 import { ReviewTest } from "../src/interfaces/review";
 import { deleteReview, getReviewById, likeReview, postReview, updateReview } from "./reviewFunctions";
@@ -19,7 +19,7 @@ describe('Testing api', () => {
         await mongoose.connection.close();
     });
     let userData: LoginMessageResponse;
-    let userData2: LoginMessageResponse;
+
  
     let songData: SongTest;
     let reviewData: ReviewTest;
@@ -28,11 +28,7 @@ describe('Testing api', () => {
         email: randomstring.generate(7) + '@tester.fi',
         password: 'testpassword',
     };
-    const testUser2: UserTest = {
-        username: 'Second Tester ' + randomstring.generate(7),
-        email: randomstring.generate(9) + '@user.fi',
-        password: 'testpassword',
-    };
+
     const testSong: SongTest = {
         song_name: 'Test Song ' + randomstring.generate(7),
         thumbnail: 'testthumbnail',
@@ -48,17 +44,12 @@ describe('Testing api', () => {
     it('should create a new user', async () => {
         await postUser(app, testUser);
     });
-    it('should create a new user', async () => {
-        await postUser(app, testUser2);
-    });
     
     it('should login user', async () => {
         userData = await loginUser(app, testUser);
     });
 
-    it('should login second user', async () => {
-        userData2 = await loginUser(app, testUser2);
-    });
+
 
     it('should return array of users', async () => {
         await getUserList(app);
@@ -114,7 +105,7 @@ describe('Testing api', () => {
     });
 
     it('should like review', async () => {
-        await likeReview(app, reviewData.id!, userData2.token!);
+        await likeReview(app, reviewData.id!, userData.token!);
     });
 
     /* Delete functions */
@@ -128,7 +119,7 @@ describe('Testing api', () => {
     });
 
     it('should delete current song', async () => {
-        await getSongById(app, songData.id!);
+        await deleteSong(app, songData.id!);
     });
 
 });
