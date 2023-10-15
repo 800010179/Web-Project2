@@ -63,4 +63,4 @@ jobs:
           app-name: "web2-frontend-azure"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4921617E9C2C4A9C862BF0B4C267BCAF }}
-          package: ./frontend
+          package: .deployment.frontend

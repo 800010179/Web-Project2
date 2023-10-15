@@ -1,4 +1,0 @@
-[config]
-project = ./backend/dist
-project = ./auhtServer/dist
-project = ./frontend/dist

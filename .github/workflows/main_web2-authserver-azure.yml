@@ -63,4 +63,4 @@ jobs:
           app-name: 'web2-authServer-azure'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_02E7C7952FD44B8DB55BF19EDB2437AF }}
-          package: ./auhtServer
+          package: .deployment.auhtServer
