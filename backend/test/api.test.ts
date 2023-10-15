@@ -12,8 +12,9 @@ import { deleteReview, getReviewById, likeReview, postReview, updateReview } fro
 
 describe('Testing api', () => {
     beforeAll(async () => {
+
         console.log(process.env.DATABASE_URL)
-        await mongoose.connect(process.env.DATABASE_URL as string);
+        await mongoose.connect("mongodb+srv://project:IuQb3r0bcAltSn5w@cluster0.rgihgen.mongodb.net/webProject?retryWrites=true&w=majority");
     });
     
     afterAll(async () => {
