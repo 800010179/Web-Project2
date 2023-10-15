@@ -35,7 +35,7 @@ interface SongCardProps {
   databaseSongs: Song[];
 }
 const SongCard: React.FC<SongCardProps> = (props) => {
-  const { title, picture, artist, album, api_id, genres, databaseSongs } = props;
+  const { title, picture, artist, album, api_id, databaseSongs } = props;
   const [reviewCount, setReviewCount] = useState<number | null>(null);
   const [mostRecentReview, setMostRecentReview] = useState<Review | null>(null);
   const navigate = useNavigate();
@@ -49,15 +49,16 @@ const SongCard: React.FC<SongCardProps> = (props) => {
     return foundSong ? foundSong.id : null;
   };
 
-  // Fetch reviews when the SongCard component is created
-  useEffect(() => {
-    if (songExistsInDatabase(api_id, databaseSongs)) {
-      const songId = getDatabaseSongId(api_id, databaseSongs);
-      if (songId) {
-        fetchReviewsForSong(songId);
-      }
+
+useEffect(() => {
+  if (songExistsInDatabase(api_id, databaseSongs)) {
+    const songId = getDatabaseSongId(api_id, databaseSongs);
+    if (songId) {
+      fetchReviewsForSong(songId);
     }
-  }, [api_id, databaseSongs]);
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [api_id, databaseSongs]);
 
   const handleSongCardClick = () => {
     if (songExistsInDatabase(api_id, databaseSongs)) {
