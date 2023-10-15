@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - web2-backend-azure
 
 on:
@@ -11,28 +14,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
         with:
-          node-version: "14" # Change this to your desired Node.js version
+          node-version: "18.x"
 
-      - name: Install dependencies and build
+      - name: npm install, build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           AUTH_URL: ${{ secrets.AUTH_URL }}
         run: |
-          cd backend
           npm install
           npm run build --if-present
           rm -rf test
           rm -rf src
-
+        working-directory: ./backend
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./*
+        run: zip release.zip ./* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
@@ -53,14 +54,14 @@ jobs:
         with:
           name: node-app
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip -d ./release
+      - name: unzip artifact for deployment
+        run: unzip release.zip
 
-      - name: Deploy to Azure Web App
+      - name: "Deploy to Azure Web App"
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: "web2-backend-azure"
           slot-name: "Production"
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BE286EC7F446488A85A2897EE0A0DDBB }}
-          package: ./release
+          package: ./backend
